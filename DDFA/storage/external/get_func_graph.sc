@@ -21,7 +21,7 @@ def toJson(query: Any): String = query match {
   * Instantiate reaching definition problem and print the solution
   *
   * Run with:
-  * joern --script storage/external/get_dataflow_output.scala --params filename=x42/c/X42.c
+  * ./joern --nocolors --script storage/external/get_func_graph.sc --params filename=x42/c/X42.c
   */
 @main def exec(filename: String, runOssDataflow: Boolean = true, exportJson: Boolean = true, exportCpg: Boolean = true, exportDataflow: Boolean = true, deleteAfter: Boolean = true, overwrite: Boolean = false) = {
    val cpgFile = File(filename + ".cpg.bin")

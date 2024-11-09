@@ -33,3 +33,6 @@ dependencies:
     - jsonargparse[signatures]
     - fastparquet
     - gdown
+variables:
+  TEMP_DIR: /media/satyaki/160f047a-dacc-449d-9208-a75717e899a1/pip_tmp
+  CACHE_DIR: /media/satyaki/160f047a-dacc-449d-9208-a75717e899a1/pip_cache
