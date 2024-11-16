@@ -131,6 +131,7 @@ if __name__ == "__main__":
     # Read Data
     if args.sample:
         args.verbose = 4
+        args.verbose = 0
 
     if args.job_array_number is None:
         if args.workers == 1:

@@ -20,4 +20,4 @@ fi
 # Start singularity instance
 python -u sastvd/scripts/getgraphs.py bigvul --sess $jan --num_jobs 100 --overwrite $@
 
-PYTHONPATH="." python -u sastvd/scripts/getgraphs.py bigvul --sess --overwrite
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py bigvul --sess --overwrite --sample

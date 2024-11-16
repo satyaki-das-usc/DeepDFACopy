@@ -11,3 +11,4 @@ source activate.sh
 
 # Start singularity instance
 python -u sastvd/scripts/prepare.py --dataset bigvul --global_workers 12 $@
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset bigvul --global_workers 12 --sample
