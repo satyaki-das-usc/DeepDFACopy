@@ -15,15 +15,17 @@ def write_file(row):
     # Write C Files
     savedir_before = svd.get_dir(svd.processed_dir() / row["dataset"] / "before")
     fpath1 = savedir_before / f"{row['id']}.c"
-    with open(fpath1, "w") as f:
-        f.write(row["before"])
+    if not os.path.exists(fpath1):
+        with open(fpath1, "w") as f:
+            f.write(row["before"])
 
     if row["dataset"] == "bigvul":
         savedir_after = svd.get_dir(svd.processed_dir() / row["dataset"] / "after")
         fpath2 = savedir_after / f"{row['id']}.c"
         if len(row["diff"]) > 0:
-            with open(fpath2, "w") as f:
-                f.write(row["after"])
+            if not os.path.exists(fpath2):
+                with open(fpath2, "w") as f:
+                    f.write(row["after"])
     else:
         fpath2 = None
 
@@ -44,13 +46,13 @@ def preprocess(row, fn):
         fpath1, fpath2 = write_file(row)
 
         # Run Joern on "before" code
-        if args.overwrite or not os.path.exists(f"{fpath1}.edges.json"):
+        if args.overwrite or not os.path.exists(f"{fpath1}.dataflow.json"):
             fn(filepath=fpath1, verbose=args.verbose)
         elif args.verbose > 0:
             print("skipping", fpath1)
 
         # Run Joern on "after" code
-        if args.overwrite or (row["dataset"] == "bigvul" and len(row["diff"]) > 0 and not os.path.exists(f"{fpath2}.edges.json")):
+        if args.overwrite or (row["dataset"] == "bigvul" and len(row["diff"]) > 0 and not os.path.exists(f"{fpath2}.dataflow.json")):
             fn(filepath=fpath2, verbose=args.verbose)
         elif args.verbose > 0:
             print("skipping", fpath2)
@@ -137,6 +139,12 @@ if __name__ == "__main__":
         if args.workers == 1:
             preprocess_whole_df_split(("all", df))
         else:
+            def requires_dfa_gen(row):
+                savedir_before = svd.get_dir(svd.processed_dir() / row["dataset"] / "before")
+                fpath1 = savedir_before / f"{row['id']}.c"
+                return args.overwrite or not os.path.exists(f"{fpath1}.dataflow.json")
+
+            filtered_df = df[df.apply(requires_dfa_gen, axis=1)]
             splits = np.array_split(df, args.workers)
             svd.dfmp(enumerate(splits), preprocess_whole_df_split, ordr=False, workers=args.workers, cs=1)
 
