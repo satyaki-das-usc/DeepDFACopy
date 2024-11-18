@@ -9,6 +9,7 @@ import argparse
 import functools
 import json
 import re
+import os
 import traceback
 from multiprocessing import Pool
 
@@ -54,6 +55,12 @@ def is_decl(n_attr):
 def get_dataflow_features(graph_id, raise_all=False, verbose=False):
     try:
         # breakpoint()
+        temp_csv_file = svd.temp_dir() / f"{dsname}" / f"abstract_dataflow{'_sample' if args.sample else ''}" / f"{graph_id}.csv"
+        if os.path.exists(temp_csv_file):
+            return pd.read_csv(temp_csv_file)
+        df_path = svd.processed_dir() / f"{dsname}/before/{graph_id}.c.dataflow.json"
+        if not df_path.exists():
+            return pd.DataFrame()
         cpg, n, e = dataflow.get_cpg(graph_id, dsname, return_n_e=True)
         # print(cpg)
         # print(n)
@@ -193,6 +200,7 @@ def get_dataflow_features(graph_id, raise_all=False, verbose=False):
             decls["subkey"] = None
             decls["subkey_node_id"] = None
             decls["subkey_text"] = None
+        decls.to_csv(temp_csv_file, index=False)
         return decls
     except Exception:
         print("graph error", graph_id, traceback.format_exc())
@@ -203,6 +211,9 @@ def get_dataflow_features(graph_id, raise_all=False, verbose=False):
 # Get all abstract dataflow info
 def get_dataflow_features_df():
     # print(get_dataflow_features_df)
+    temp_dir = svd.temp_dir() / f"{dsname}" / f"abstract_dataflow{'_sample' if args.sample else ''}"
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir, exist_ok=True)
     csv_file = (
         svd.cache_dir() / f"{dsname}/abstract_dataflow{'_sample' if args.sample else ''}.csv"
     )
@@ -225,6 +236,8 @@ def get_dataflow_features_df():
                 total=len(all_df),
                 desc="get abstract dataflow features",
             ):
+                if decls_df.empty:
+                    continue
                 dataflow_df = pd.concat([dataflow_df, decls_df], ignore_index=True)
 
         dataflow_df = dataflow_df[

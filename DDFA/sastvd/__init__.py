@@ -81,6 +81,12 @@ def cache_dir() -> Path:
     threadsafe_mkdir(path)
     return path
 
+def temp_dir() -> Path:
+    """Get storage cache path."""
+    path = storage_dir() / "temp"
+    threadsafe_mkdir(path)
+    return path
+
 
 def get_dir(path) -> Path:
     """Get path, if exists. If not, create it."""

@@ -11,5 +11,8 @@ source activate.sh
 
 set -e
 
+PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --workers 8 --no-cache --stage 1 --sample $@
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --workers 16 --no-cache --stage 1 $@
+
+PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --workers 8 --no-cache --stage 2 --sample $@
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --workers 16 --no-cache --stage 2 $@
