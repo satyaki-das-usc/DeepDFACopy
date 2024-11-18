@@ -12,3 +12,5 @@ conda create -n deepdfa python=3.10 pip==23.2.1 cudatoolkit=11.8 notebook ipytho
 conda activate deepdfa
 export TMPDIR=/media/satyaki/22cce3a2-7e84-4401-9b92-07e2fbeec556/pip_tmp
 pip install --cache-dir /media/satyaki/22cce3a2-7e84-4401-9b92-07e2fbeec556/pip_cache -r requirements.txt
+
+pip install --cache-dir /media/satyaki/22cce3a2-7e84-4401-9b92-07e2fbeec556/pip_cache -r ../numpy.txt

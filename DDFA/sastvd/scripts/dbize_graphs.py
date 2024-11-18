@@ -1,6 +1,7 @@
 #%%
 import pandas as pd
 import sastvd as svd
+from tqdm import tqdm
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -20,7 +21,7 @@ edge_dfs
 import dgl
 graphs = []
 graph_ids = []
-for graph_id, group in edge_dfs.groupby("graph_id"):
+for graph_id, group in tqdm(edge_dfs.groupby("graph_id"), total=edge_dfs["graph_id"].nunique()):
     g = dgl.graph((group["innode"].tolist(), group["outnode"].tolist()))
     g = dgl.add_self_loop(g)
     graphs.append(g)
