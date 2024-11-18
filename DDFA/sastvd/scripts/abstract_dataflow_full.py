@@ -236,6 +236,8 @@ def get_dataflow_features_df():
                 total=len(all_df),
                 desc="get abstract dataflow features",
             ):
+                if decls_df is None:
+                    continue
                 if decls_df.empty:
                     continue
                 dataflow_df = pd.concat([dataflow_df, decls_df], ignore_index=True)
