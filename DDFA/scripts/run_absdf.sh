@@ -10,3 +10,5 @@
 source activate.sh
 
 python -u sastvd/scripts/dbize_absdf.py $@
+PYTHONPATH="." python -u sastvd/scripts/dbize_absdf.py --sample
+PYTHONPATH="." python -u sastvd/scripts/dbize_absdf.py
