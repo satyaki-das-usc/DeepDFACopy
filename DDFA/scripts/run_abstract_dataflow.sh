@@ -20,4 +20,4 @@ PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py  --dsname sard
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --workers 8 --cache --stage 2 --sample $@
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py  --dsname sard --workers 8 --cache --stage 2 --sample $@
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --workers 16 --no-cache --stage 2 $@
-PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --workers 16 --cache --stage 2 $@
+PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --workers 24 --cache --stage 2 $@
