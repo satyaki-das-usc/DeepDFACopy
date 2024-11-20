@@ -33,6 +33,75 @@ def remove_comments(text):
     return re.sub(pattern, replacer, text)
 
 
+def sard(cache=True, sample=False):
+    """
+    Read SARD dataset from csv
+    """
+
+    savefile = (
+        svd.get_dir(svd.cache_dir() / "minimal_datasets")
+        / f"minimal_sard{'_sample' if sample else ''}.pq"
+    )
+    if cache:
+        try:
+            df = pd.read_parquet(savefile, engine="fastparquet").dropna()
+
+            return df
+        except FileNotFoundError:
+            logger.info(f"file {savefile} not found, loading from source")
+        except Exception:
+            logger.exception("sard exception, loading from source")
+
+    filename = "SARD_raw.csv"
+    df = pd.read_csv(svd.external_dir() / filename,)
+    df = df.rename_axis("id").reset_index()
+    df["dataset"] = "sard"
+
+    # Remove comments
+    df["before"] = svd.dfmp(df, remove_comments, "processed_func", cs=500)
+    df["before"] = df["before"].apply(lambda c: c.replace("\n\n", "\n"))
+
+    # Remove functions with abnormal ending (no } or ;)
+    df = df[
+        ~df.apply(
+            lambda x: x.before.strip()[-1] != "}"
+            and x.before.strip()[-1] != ";",
+            axis=1,
+        )
+    ]
+    # Remove functions with abnormal ending (ending with ");")
+    df = df[~df.before.apply(lambda x: x[-2:] == ");")]
+    df["vul"] = df["target"]
+
+    # # Remove samples with mod_prop > 0.5
+    # dfv["mod_prop"] = dfv.apply(
+    #     lambda x: len(x.added + x.removed) / len(x["diff"].splitlines()), axis=1
+    # )
+    # dfv = dfv.sort_values("mod_prop", ascending=0)
+    # dfv = dfv[dfv.mod_prop < 0.7]
+    # # Remove functions that are too short
+    # dfv = dfv[dfv.apply(lambda x: len(x.before.splitlines()) > 5, axis=1)]
+
+    if sample:
+        df = df.sample(n=384, random_state=42)
+
+    minimal_cols = [
+        "id",
+        "dataset",
+        "before",
+        "target",
+        "vul",
+    ]
+    df[minimal_cols].to_parquet(
+        savefile,
+        object_encoding="json",
+        index=0,
+        compression="gzip",
+        engine="fastparquet",
+    )
+    return df
+
+
 def devign(cache=True, sample=False):
     """
     Read devign dataset from JSON
@@ -131,6 +200,8 @@ def ds(dsname, cache=True, sample=False):
         return bigvul(cache=cache, sample=sample)
     elif dsname == "devign":
         return devign(cache=cache, sample=sample)
+    elif dsname == "sard":
+        return sard(cache=cache, sample=sample)
     elif "mutated" in dsname:
         subdataset = dsname.split("_", maxsplit=1)[1]
         return mutated(subdataset, cache=cache, sample=sample)
@@ -479,6 +550,8 @@ def get_splits_map(dsname):
         splits = get_linevul_splits()
     if dsname == "devign":
         splits = get_codexglue_splits()
+    if dsname == "sard":
+        splits = get_sard_splits()
     logger.debug("splits value counts:\n%s", splits.value_counts())
     return splits.to_dict()
 
@@ -506,6 +579,12 @@ def get_codexglue_splits():
     splits = splits_df["split"]
     return splits
 
+def get_sard_splits():
+    logger.debug("loading linevul splits")
+    splits_df = pd.read_csv(svd.external_dir() / "sard_splits.csv", index_col=0)
+    splits = splits_df["split"]
+    splits = splits.replace("valid", "val")
+    return splits
 
 def get_named_splits_map(split):
     logger.debug("loading %s splits", split)

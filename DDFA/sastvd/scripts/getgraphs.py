@@ -120,13 +120,13 @@ if __name__ == "__main__":
 
     if args.file_only:
 
-        def write_file_pair(row):
+        def write_file_pair(t):
             i, row = t
             write_file(row)
 
         with Pool(args.workers) as pool:
             for _ in tqdm.tqdm(
-                pool.imap_unordered(write_file, df.iterrows()), total=len(df)
+                pool.imap_unordered(write_file_pair, df.iterrows()), total=len(df)
             ):
                 pass
 

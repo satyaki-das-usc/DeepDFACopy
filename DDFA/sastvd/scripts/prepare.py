@@ -21,6 +21,13 @@ def devign():
     svdd2v.generate_d2v("devign", sample=args.sample)
     print("success")
 
+def sard():
+    print(svdd.sard(sample=args.sample))
+    # ivde.get_dep_add_lines("sard", sample=args.sample)
+    # svdglove.generate_glove("devign", sample=args.sample)
+    # svdd2v.generate_d2v("devign", sample=args.sample)
+    print("success")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Prepare master dataframe")
@@ -36,3 +43,5 @@ if __name__ == "__main__":
         bigvul()
     if args.dataset == "devign":
         devign()
+    if args.dataset == "sard":
+        sard()

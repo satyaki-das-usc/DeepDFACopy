@@ -56,7 +56,32 @@ if dsname == "bigvul":
         return n, e
 
     node_dfs, edge_dfs = zip(*svd.dfmp(df, graph_features, "id"))
+
 elif dsname == "devign":
+    graph_type = "cfg"
+
+    def graph_features(row):
+        _id = row["id"]
+        target = row["target"]
+        itempath = svdds.itempath(_id, dsname)
+        n, e = feature_extraction(itempath,
+            graph_type=graph_type,
+            return_nodes=True,
+            return_edges=True,
+            group=False,
+            )
+        n["vuln"] = target
+        n = n.drop(columns=["id"])
+        n = n.reset_index().rename(columns={"index": "dgl_id"})
+        n["graph_id"] = _id
+        e["graph_id"] = _id
+        n = n.reset_index(drop=True)
+        e = e.reset_index(drop=True)
+        return n, e
+
+    node_dfs, edge_dfs = zip(*svd.dfmp(df, graph_features, ["id", "target"]))
+
+elif dsname == "sard":
     graph_type = "cfg"
 
     def graph_features(row):
