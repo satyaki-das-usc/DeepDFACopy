@@ -5,6 +5,7 @@ import sastvd.helpers.evaluate as ivde
 from sastvd.linevd.utils import feature_extraction
 
 import argparse
+import json
 parser = argparse.ArgumentParser()
 parser.add_argument("--sample", action="store_true")
 parser.add_argument("--dsname", default="bigvul")
@@ -27,6 +28,9 @@ df = svdds.ds_filter(
 print(df)
 
 #%%
+with open(svd.external_dir() / "feature_list.json", "r") as rfi:
+    feature_list = json.load(rfi)
+
 if dsname == "bigvul":
     graph_type = "cfg"
     dep_add_lines = ivde.get_dep_add_lines_bigvul("bigvul", sample=sample_mode)
@@ -81,7 +85,7 @@ elif dsname == "devign":
 
     node_dfs, edge_dfs = zip(*svd.dfmp(df, graph_features, ["id", "target"]))
 
-elif dsname == "sard":
+elif dsname == "sard" or dsname in feature_list["VF"]:
     graph_type = "cfg"
 
     def graph_features(row):
