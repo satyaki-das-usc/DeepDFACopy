@@ -101,6 +101,74 @@ def sard(cache=True, sample=False):
     )
     return df
 
+def feat(feat_name, cache=True, sample=False):
+    """
+    Read SARD dataset from csv
+    """
+
+    savefile = (
+        svd.get_dir(svd.cache_dir() / "minimal_datasets")
+        / f"minimal_{feat_name}{'_sample' if sample else ''}.pq"
+    )
+    if cache:
+        try:
+            df = pd.read_parquet(savefile, engine="fastparquet").dropna()
+
+            return df
+        except FileNotFoundError:
+            logger.info(f"file {savefile} not found, loading from source")
+        except Exception:
+            logger.exception("sard exception, loading from source")
+
+    filename = f"{feat_name}.csv"
+    df = pd.read_csv(svd.external_dir() / filename,)
+    df = df.rename_axis("id").reset_index()
+    df["dataset"] = feat_name
+
+    # Remove comments
+    df["before"] = svd.dfmp(df, remove_comments, "processed_func", cs=500)
+    df["before"] = df["before"].apply(lambda c: c.replace("\n\n", "\n"))
+
+    # Remove functions with abnormal ending (no } or ;)
+    df = df[
+        ~df.apply(
+            lambda x: x.before.strip()[-1] != "}"
+            and x.before.strip()[-1] != ";",
+            axis=1,
+        )
+    ]
+    # Remove functions with abnormal ending (ending with ");")
+    df = df[~df.before.apply(lambda x: x[-2:] == ");")]
+    df["vul"] = df["target"]
+
+    # # Remove samples with mod_prop > 0.5
+    # dfv["mod_prop"] = dfv.apply(
+    #     lambda x: len(x.added + x.removed) / len(x["diff"].splitlines()), axis=1
+    # )
+    # dfv = dfv.sort_values("mod_prop", ascending=0)
+    # dfv = dfv[dfv.mod_prop < 0.7]
+    # # Remove functions that are too short
+    # dfv = dfv[dfv.apply(lambda x: len(x.before.splitlines()) > 5, axis=1)]
+
+    if sample:
+        df = df.sample(n=384, random_state=42)
+
+    minimal_cols = [
+        "id",
+        "dataset",
+        "before",
+        "target",
+        "vul",
+    ]
+    df[minimal_cols].to_parquet(
+        savefile,
+        object_encoding="json",
+        index=0,
+        compression="gzip",
+        engine="fastparquet",
+    )
+    return df
+
 
 def devign(cache=True, sample=False):
     """
@@ -196,6 +264,8 @@ def mutated(subdataset, cache=True, sample=False):
 
 
 def ds(dsname, cache=True, sample=False):
+    with open(svd.external_dir() / "feature_list.json", "r") as rfi:
+        feature_list = json.load(rfi)
     if dsname == "bigvul":
         return bigvul(cache=cache, sample=sample)
     elif dsname == "devign":
@@ -205,6 +275,8 @@ def ds(dsname, cache=True, sample=False):
     elif "mutated" in dsname:
         subdataset = dsname.split("_", maxsplit=1)[1]
         return mutated(subdataset, cache=cache, sample=sample)
+    elif dsname in feature_list["VF"]:
+        return feat(dsname, cache=cache, sample=sample)
 
 
 def bigvul(cache=True, sample=False):

@@ -1,4 +1,5 @@
 import argparse
+import json
 import sastvd as svd
 import sastvd.helpers.datasets as svdd
 import sastvd.helpers.evaluate as ivde
@@ -28,6 +29,13 @@ def sard():
     # svdd2v.generate_d2v("devign", sample=args.sample)
     print("success")
 
+def feat(feat_name):
+    print(svdd.feat(feat_name, sample=args.sample))
+    # ivde.get_dep_add_lines("sard", sample=args.sample)
+    # svdglove.generate_glove("devign", sample=args.sample)
+    # svdd2v.generate_d2v("devign", sample=args.sample)
+    print("success")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Prepare master dataframe")
@@ -39,9 +47,13 @@ if __name__ == "__main__":
     if args.global_workers is not None:
         svd.DFMP_WORKERS = args.global_workers
 
+    with open(svd.external_dir() / "feature_list.json", "r") as rfi:
+        feature_list = json.load(rfi)
     if args.dataset == "bigvul":
         bigvul()
-    if args.dataset == "devign":
+    elif args.dataset == "devign":
         devign()
-    if args.dataset == "sard":
+    elif args.dataset == "sard":
         sard()
+    elif args.dataset in feature_list["VF"]:
+        feat(args.dataset)

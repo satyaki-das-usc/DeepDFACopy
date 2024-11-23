@@ -23,3 +23,15 @@ python -u sastvd/scripts/getgraphs.py bigvul --sess $jan --num_jobs 100 --overwr
 PYTHONPATH="." python -u sastvd/scripts/getgraphs.py bigvul --sess --workers 24
 PYTHONPATH="." python -u sastvd/scripts/getgraphs.py sard --sess --file_only --sample
 PYTHONPATH="." python -u sastvd/scripts/getgraphs.py sard --sess --sample
+
+
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py incorr_calc_buff_size --sess
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py buff_access_src_size --sess
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py off_by_one --sess
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py buff_overread --sess
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py double_free --sess
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py use_after_free --sess
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py buff_underwrite --sess
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py buff_underread --sess
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py sensi_read --sess
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py sensi_write --sess
