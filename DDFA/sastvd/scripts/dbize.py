@@ -85,7 +85,7 @@ elif dsname == "devign":
 
     node_dfs, edge_dfs = zip(*svd.dfmp(df, graph_features, ["id", "target"]))
 
-elif dsname == "sard" or dsname in feature_list["VF"]:
+elif dsname == "sard" or dsname in feature_list["VF"] + feature_list["GSF"]:
     graph_type = "cfg"
 
     def graph_features(row):

@@ -275,7 +275,7 @@ def ds(dsname, cache=True, sample=False):
     elif "mutated" in dsname:
         subdataset = dsname.split("_", maxsplit=1)[1]
         return mutated(subdataset, cache=cache, sample=sample)
-    elif dsname in feature_list["VF"]:
+    elif dsname in feature_list["VF"] + feature_list["GSF"]:
         return feat(dsname, cache=cache, sample=sample)
 
 
@@ -626,7 +626,7 @@ def get_splits_map(dsname):
         splits = get_codexglue_splits()
     if dsname == "sard":
         splits = get_sard_splits()
-    if dsname in feature_list["VF"]:
+    if dsname in feature_list["VF"] + feature_list["GSF"]:
         splits =  get_feat_splits(dsname)
     logger.debug("splits value counts:\n%s", splits.value_counts())
     return splits.to_dict()
@@ -809,7 +809,7 @@ def abs_dataflow(feat, dsname="bigvul", sample=False, split="fixed", seed=0):
     )
     with open(svd.external_dir() / "feature_list.json", "r") as rfi:
         feature_list = json.load(rfi)
-    if dsname in feature_list["VF"]:
+    if dsname in feature_list["VF"] + feature_list["GSF"]:
         fraction_to_remove = 0.2
         num_rows_to_remove = int(len(df) * fraction_to_remove)
         rows_to_drop = np.random.choice(df.index, num_rows_to_remove, replace=False)

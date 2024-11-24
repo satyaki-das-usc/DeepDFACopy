@@ -55,5 +55,5 @@ if __name__ == "__main__":
         devign()
     elif args.dataset == "sard":
         sard()
-    elif args.dataset in feature_list["VF"]:
+    elif args.dataset in feature_list["VF"] + feature_list["GSF"]:
         feat(args.dataset)
