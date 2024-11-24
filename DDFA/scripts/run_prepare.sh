@@ -14,6 +14,8 @@ python -u sastvd/scripts/prepare.py --dataset bigvul --global_workers 12 $@
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset bigvul --global_workers 12 --sample
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset sard --global_workers 12 --sample
 
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset devign --global_workers 12
+
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset incorr_calc_buff_size --global_workers 12
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset buff_access_src_size --global_workers 12
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset off_by_one --global_workers 12
@@ -24,3 +26,6 @@ PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset buff_underwrite --g
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset buff_underread --global_workers 12
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset sensi_read --global_workers 12
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset sensi_write --global_workers 12
+
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset node_set --global_workers 12
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset edge_set --global_workers 12

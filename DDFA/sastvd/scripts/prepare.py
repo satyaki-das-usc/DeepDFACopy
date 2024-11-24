@@ -15,11 +15,11 @@ def bigvul():
 
 
 def devign():
-    raise NotImplementedError
+    # raise NotImplementedError
     print(svdd.devign(sample=args.sample))
-    ivde.get_dep_add_lines("devign", sample=args.sample)
-    svdglove.generate_glove("devign", sample=args.sample)
-    svdd2v.generate_d2v("devign", sample=args.sample)
+    # ivde.get_dep_add_lines("devign", sample=args.sample)
+    # svdglove.generate_glove("devign", sample=args.sample)
+    # svdd2v.generate_d2v("devign", sample=args.sample)
     print("success")
 
 def sard():

@@ -12,8 +12,16 @@ source activate.sh
 set -e
 
 python -u sastvd/scripts/dbize.py $@
+PYTHONPATH="." python -u sastvd/scripts/dbize.py --dsname sard
+
+PYTHONPATH="." python -u sastvd/scripts/dbize.py --dsname devign
+
 PYTHONPATH="." python -u sastvd/scripts/dbize.py --sample
 PYTHONPATH="." python -u sastvd/scripts/dbize.py --dsname sard --sample
 python -u sastvd/scripts/dbize_graphs.py $@
+PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --dsname sard
+
+PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --dsname devign
+
 PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --sample
 PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --dsname sard --sample

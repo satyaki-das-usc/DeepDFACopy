@@ -21,6 +21,10 @@ fi
 python -u sastvd/scripts/getgraphs.py bigvul --sess $jan --num_jobs 100 --overwrite $@
 
 PYTHONPATH="." python -u sastvd/scripts/getgraphs.py bigvul --sess --workers 24
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py sard --sess --workers 24
+
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py devign --sess --workers 24
+
 PYTHONPATH="." python -u sastvd/scripts/getgraphs.py sard --sess --file_only --sample
 PYTHONPATH="." python -u sastvd/scripts/getgraphs.py sard --sess --sample
 

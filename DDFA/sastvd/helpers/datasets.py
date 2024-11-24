@@ -649,10 +649,10 @@ def get_linevul_splits():
 
 
 def get_codexglue_splits():
-    splits_df = pd.read_csv(svd.external_dir() / "codexglue_splits.csv")
-    splits_df = splits_df.set_index("example_index")
-    splits_df["split"] = splits_df["split"].replace("valid", "val")
+    splits_df = pd.read_csv(svd.external_dir() / "devign_splits.csv")
+    # splits_df = splits_df.set_index("example_index")
     splits = splits_df["split"]
+    splits = splits.replace("valid", "val")
     return splits
 
 def get_sard_splits():
