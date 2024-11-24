@@ -618,12 +618,16 @@ def bigvul_filter(
 
 def get_splits_map(dsname):
     logger.debug("loading fixed splits")
+    with open(svd.external_dir() / "feature_list.json", "r") as rfi:
+        feature_list = json.load(rfi)
     if dsname == "bigvul" or "mutated" in dsname:
         splits = get_linevul_splits()
     if dsname == "devign":
         splits = get_codexglue_splits()
     if dsname == "sard":
         splits = get_sard_splits()
+    if dsname in feature_list["VF"]:
+        splits =  get_feat_splits(dsname)
     logger.debug("splits value counts:\n%s", splits.value_counts())
     return splits.to_dict()
 
@@ -654,6 +658,13 @@ def get_codexglue_splits():
 def get_sard_splits():
     logger.debug("loading linevul splits")
     splits_df = pd.read_csv(svd.external_dir() / "sard_splits.csv", index_col=0)
+    splits = splits_df["split"]
+    splits = splits.replace("valid", "val")
+    return splits
+
+def get_feat_splits(feat_name):
+    logger.debug("loading linevul splits")
+    splits_df = pd.read_csv(svd.external_dir() / f"{feat_name}_splits.csv", index_col=0)
     splits = splits_df["split"]
     splits = splits.replace("valid", "val")
     return splits
@@ -796,7 +807,15 @@ def abs_dataflow(feat, dsname="bigvul", sample=False, split="fixed", seed=0):
         sample_mode=sample,
         seed=seed,
     )
-    source_df = ds_partition(df, "train", dsname, split=split, seed=seed)
+    with open(svd.external_dir() / "feature_list.json", "r") as rfi:
+        feature_list = json.load(rfi)
+    if dsname in feature_list["VF"]:
+        fraction_to_remove = 0.2
+        num_rows_to_remove = int(len(df) * fraction_to_remove)
+        rows_to_drop = np.random.choice(df.index, num_rows_to_remove, replace=False)
+        source_df = df.drop(rows_to_drop)
+    else:
+        source_df = ds_partition(df, "train", dsname, split=split, seed=seed)
 
     abs_df_file = (
         svd.processed_dir()
