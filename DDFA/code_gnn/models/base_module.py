@@ -58,6 +58,7 @@ class BaseModule(pl.LightningModule):
         
         self.test_pr_curve = torchmetrics.PrecisionRecallCurve()
         self.test_pr_curve_bin = torchmetrics.BinnedPrecisionRecallCurve(1)
+        self.test_indices = []
         self.test_preds = torchmetrics.CatMetric()
         self.test_labels = torchmetrics.CatMetric()
         self.test_confmat = torchmetrics.ConfusionMatrix(num_classes=2)
@@ -236,7 +237,6 @@ class BaseModule(pl.LightningModule):
         #     self.test_every_metrics.update(out, label)
 
     def test_step(self, batch_data, batch_idx):
-        print(batch_idx)
         do_profile = self.hparams.profile and batch_idx > 2
         if do_profile:
             prof = self.prof
@@ -247,7 +247,8 @@ class BaseModule(pl.LightningModule):
             start = torch.cuda.Event(enable_timing=True)
             end = torch.cuda.Event(enable_timing=True)
 
-        batch, extrafeats = batch_data
+        test_indices, batch, extrafeats = batch_data
+        self.test_indices += test_indices
         label = self.get_label(batch)
         if do_time:
             start.record()
@@ -363,8 +364,12 @@ class BaseModule(pl.LightningModule):
         preds, labels = preds.cpu().numpy(), labels.cpu().numpy()
         preds = preds > 0.5
 
-        print(preds)
-        print(labels)
+        indices_num = [int(index) for index in self.test_indices]
+        preds_num = [int(index) for index in preds]
+        labels_num = [int(index) for index in labels]
+
+        pred_df = pd.DataFrame({"id": indices_num, "labels": labels_num, "preds": preds_num})
+        pred_df.to_csv("pred_mapping.csv", index=False)
 
         def get_n_params(model):
             pp=0
