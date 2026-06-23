@@ -15,6 +15,8 @@ PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset bigvul --global_wor
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset sard --global_workers 12 --sample
 
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset devign --global_workers 12
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset devign_node_set --global_workers 12
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset devign_edge_set --global_workers 12
 
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset incorr_calc_buff_size --global_workers 12
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset buff_access_src_size --global_workers 12
