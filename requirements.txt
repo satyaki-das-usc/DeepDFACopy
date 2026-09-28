@@ -1,0 +1,5 @@
+pandas
+unidiff
+scipy
+fastparquet
+scikit-learn

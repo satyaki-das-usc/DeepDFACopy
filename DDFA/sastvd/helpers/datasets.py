@@ -266,7 +266,7 @@ def mutated(subdataset, cache=True, sample=False):
 def ds(dsname, cache=True, sample=False):
     with open(svd.external_dir() / "feature_list.json", "r") as rfi:
         feature_list = json.load(rfi)
-    if dsname == "bigvul":
+    if dsname == "bigvul_old":
         return bigvul(cache=cache, sample=sample)
     elif dsname == "devign":
         return devign(cache=cache, sample=sample)
@@ -275,7 +275,7 @@ def ds(dsname, cache=True, sample=False):
     elif "mutated" in dsname:
         subdataset = dsname.split("_", maxsplit=1)[1]
         return mutated(subdataset, cache=cache, sample=sample)
-    elif dsname in feature_list["VF"] + feature_list["GSF"]:
+    elif dsname in ["bigvul", "ffmpeg_qemu", "reposvul"]:
         return feat(dsname, cache=cache, sample=sample)
 
 
