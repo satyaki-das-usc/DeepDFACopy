@@ -47,13 +47,13 @@ if __name__ == "__main__":
     if args.global_workers is not None:
         svd.DFMP_WORKERS = args.global_workers
 
-    with open(svd.external_dir() / "feature_list.json", "r") as rfi:
-        feature_list = json.load(rfi)
-    if args.dataset == "bigvul":
+    # with open(svd.external_dir() / "feature_list.json", "r") as rfi:
+    #     feature_list = json.load(rfi)
+    if args.dataset == "bigvul_old":
         bigvul()
     elif args.dataset == "devign":
         devign()
     elif args.dataset == "sard":
         sard()
-    elif args.dataset in feature_list["VF"] + feature_list["GSF"]:
+    elif args.dataset in ["bigvul", "ffmpeg_qemu", "reposvul"]:
         feat(args.dataset)

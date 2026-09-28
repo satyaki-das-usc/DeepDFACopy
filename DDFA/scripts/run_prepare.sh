@@ -31,3 +31,8 @@ PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset sensi_write --globa
 
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset node_set --global_workers 12
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset edge_set --global_workers 12
+
+
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset bigvul --global_workers 12
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset ffmpeg_qemu --global_workers 12
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset reposvul --global_workers 12
