@@ -19,17 +19,18 @@ def write_file(row):
         with open(fpath1, "w") as f:
             f.write(row["before"])
 
-    if row["dataset"] == "bigvul":
-        savedir_after = svd.get_dir(svd.processed_dir() / row["dataset"] / "after")
-        fpath2 = savedir_after / f"{row['id']}.c"
-        if len(row["diff"]) > 0:
-            if not os.path.exists(fpath2):
-                with open(fpath2, "w") as f:
-                    f.write(row["after"])
-    else:
-        fpath2 = None
+    # if row["dataset"] == "bigvul":
+    #     savedir_after = svd.get_dir(svd.processed_dir() / row["dataset"] / "after")
+    #     fpath2 = savedir_after / f"{row['id']}.c"
+    #     if len(row["diff"]) > 0:
+    #         if not os.path.exists(fpath2):
+    #             with open(fpath2, "w") as f:
+    #                 f.write(row["after"])
+    # else:
+    #     fpath2 = None
 
-    return fpath1, fpath2
+    # return fpath1, fpath2
+    return fpath1, None
 
 
 def preprocess(row, fn):
