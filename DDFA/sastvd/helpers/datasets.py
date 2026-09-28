@@ -264,8 +264,8 @@ def mutated(subdataset, cache=True, sample=False):
 
 
 def ds(dsname, cache=True, sample=False):
-    with open(svd.external_dir() / "feature_list.json", "r") as rfi:
-        feature_list = json.load(rfi)
+    # with open(svd.external_dir() / "feature_list.json", "r") as rfi:
+    #     feature_list = json.load(rfi)
     if dsname == "bigvul_old":
         return bigvul(cache=cache, sample=sample)
     elif dsname == "devign":
