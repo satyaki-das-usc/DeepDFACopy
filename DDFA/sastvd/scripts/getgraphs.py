@@ -146,7 +146,10 @@ if __name__ == "__main__":
                 return args.overwrite or not os.path.exists(f"{fpath1}.dataflow.json")
 
             filtered_df = df[df.apply(requires_dfa_gen, axis=1)]
-            splits = np.array_split(df, args.workers)
+            splits = [
+                df.iloc[idx]
+                for idx in np.array_split(np.arange(len(df)), args.workers)
+            ]
             svd.dfmp(enumerate(splits), preprocess_whole_df_split, ordr=False, workers=args.workers, cs=1)
 
     elif args.sess:
