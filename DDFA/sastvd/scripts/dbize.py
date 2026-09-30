@@ -28,10 +28,10 @@ df = svdds.ds_filter(
 print(df)
 
 #%%
-with open(svd.external_dir() / "feature_list.json", "r") as rfi:
-    feature_list = json.load(rfi)
+# with open(svd.external_dir() / "feature_list.json", "r") as rfi:
+#     feature_list = json.load(rfi)
 
-if dsname == "bigvul":
+if dsname == "bigvul_old":
     graph_type = "cfg"
     dep_add_lines = ivde.get_dep_add_lines_bigvul("bigvul", sample=sample_mode)
     dep_add_lines = {k: set(list(v["removed"]) + v["depadd"]) for k, v in dep_add_lines.items()}
@@ -85,7 +85,7 @@ elif dsname == "devign":
 
     node_dfs, edge_dfs = zip(*svd.dfmp(df, graph_features, ["id", "target"]))
 
-elif dsname == "sard" or dsname in feature_list["VF"] + feature_list["GSF"]:
+elif dsname in ["bigvul", "ffmpeg_qemu", "reposvul"]:
     graph_type = "cfg"
 
     def graph_features(row):

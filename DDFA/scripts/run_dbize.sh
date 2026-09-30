@@ -25,3 +25,11 @@ PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --dsname devign
 
 PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --sample
 PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --dsname sard --sample
+
+PYTHONPATH="." python -u sastvd/scripts/dbize.py --dsname bigvul
+PYTHONPATH="." python -u sastvd/scripts/dbize.py --dsname ffmpeg_qemu
+PYTHONPATH="." python -u sastvd/scripts/dbize.py --dsname reposvul
+
+PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --dsname bigvul
+PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --dsname ffmpeg_qemu
+PYTHONPATH="." python -u sastvd/scripts/dbize_graphs.py --dsname reposvul
