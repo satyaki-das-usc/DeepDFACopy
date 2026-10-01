@@ -170,7 +170,7 @@ class BaseModule(pl.LightningModule):
         self.log(pred_name, pred_metric[pred_name], on_step=False, on_epoch=True)
 
     def training_step(self, batch_data, batch_idx):
-        batch, extrafeats = batch_data
+        _, batch, extrafeats = batch_data
         label = self.get_label(batch)
         out = self.forward(batch, extrafeats)
         if self.hparams.label_style == "dataflow_solution_in":
