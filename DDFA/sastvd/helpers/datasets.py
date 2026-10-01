@@ -807,7 +807,7 @@ def abs_dataflow(feat, dsname="bigvul_old", sample=False, split="fixed", seed=0)
         sample_mode=sample,
         seed=seed,
     )
-    if dsname in feature_list["VF"] + feature_list["GSF"]:
+    if dsname in ["bigvul", "ffmpeg_qemu", "reposvul"]:
         fraction_to_remove = 0.2
         num_rows_to_remove = int(len(df) * fraction_to_remove)
         rows_to_drop = np.random.choice(df.index, num_rows_to_remove, replace=False)
