@@ -32,14 +32,12 @@ class BaseModule(pl.LightningModule):
         self.class_threshold = 0.5
 
         # https://torchmetrics.readthedocs.io/en/stable/pages/classification.html
-        metrics = torchmetrics.MetricCollection(
-            [
-                torchmetrics.Accuracy(),
-                torchmetrics.Precision(),
-                torchmetrics.Recall(),
-                torchmetrics.F1Score(),
-            ]
-        )
+        metrics = torchmetrics.MetricCollection({
+            "Accuracy": torchmetrics.Accuracy(task="binary"),
+            "Precision": torchmetrics.Precision(task="binary"),
+            "Recall": torchmetrics.Recall(task="binary"),
+            "F1Score": torchmetrics.F1Score(task="binary"),
+        })
         self.train_metrics = metrics.clone(prefix="train_")
         self.val_metrics = metrics.clone(prefix="val_")
         if test_every:
@@ -56,12 +54,14 @@ class BaseModule(pl.LightningModule):
         # self.val_metrics_negative = metrics.clone(prefix="val_0_")
         self.test_metrics_negative = metrics.clone(prefix="test_0_")
         
-        self.test_pr_curve = torchmetrics.PrecisionRecallCurve()
-        self.test_pr_curve_bin = torchmetrics.BinnedPrecisionRecallCurve(1)
+        self.test_pr_curve = torchmetrics.PrecisionRecallCurve(task="binary")
+        self.test_pr_curve_bin = torchmetrics.PrecisionRecallCurve(
+            task="binary", thresholds=100
+        )
         self.test_indices = []
         self.test_preds = torchmetrics.CatMetric()
         self.test_labels = torchmetrics.CatMetric()
-        self.test_confmat = torchmetrics.ConfusionMatrix(num_classes=2)
+        self.test_confmat = torchmetrics.ConfusionMatrix(task="binary")
         
         self.label_proportion = nn.ModuleDict({partition + "_label_proportion": torchmetrics.MeanMetric() for partition in ["train", "val", "test"]})
         self.prediction_proportion = nn.ModuleDict({partition + "_prediction_proportion": torchmetrics.MeanMetric() for partition in ["train", "val", "test"]})
