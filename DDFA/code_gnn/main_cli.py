@@ -3,7 +3,7 @@ import re
 import sys
 import dgl
 import numpy as np
-from pytorch_lightning.utilities.cli import LightningCLI
+from pytorch_lightning.cli import LightningCLI
 import tqdm
 from code_gnn.models.flow_gnn.ggnn import FlowGNNGGNNModule
 from code_gnn.my_tb import MyTensorBoardLogger
