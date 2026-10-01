@@ -323,7 +323,7 @@ class BaseModule(pl.LightningModule):
         self.test_preds.update(out)
         self.test_labels.update(label)
         
-    def training_epoch_end(self, outputs):
+    def on_train_epoch_end(self):
         self.log_dict(self.train_metrics.compute(), on_step=False, on_epoch=True)
         # self.log_dict(self.train_metrics_positive.compute(), on_step=False, on_epoch=True)
         # self.log_dict(self.train_metrics_negative.compute(), on_step=False, on_epoch=True)
@@ -331,7 +331,7 @@ class BaseModule(pl.LightningModule):
         # self.train_metrics_positive.reset()
         # self.train_metrics_negative.reset()
     
-    def validation_epoch_end(self, outputs):
+    def on_validation_epoch_end(self):
         ld = self.val_metrics.compute()
         self.log_dict(ld, on_step=False, on_epoch=True)
         # self.log_dict(self.val_metrics_positive.compute(), on_step=False, on_epoch=True)
@@ -346,7 +346,7 @@ class BaseModule(pl.LightningModule):
         # if self.hparams.tune_nni:
         nni.report_intermediate_result(ld["val_F1Score"].cpu().item())
     
-    def test_epoch_end(self, outputs):
+    def on_test_epoch_end(self):
         self.log_dict(self.test_metrics.compute(), on_step=False, on_epoch=True)
         self.log_dict(self.test_metrics_positive.compute(), on_step=False, on_epoch=True)
         self.log_dict(self.test_metrics_negative.compute(), on_step=False, on_epoch=True)
