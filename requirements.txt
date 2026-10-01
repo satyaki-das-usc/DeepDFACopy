@@ -20,3 +20,4 @@ nni
 torchsampler
 silence-tensorflow
 tensorflow
+jsonargparse[signatures]>=4.27.7
