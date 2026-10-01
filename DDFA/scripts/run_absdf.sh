@@ -17,3 +17,7 @@ PYTHONPATH="." python -u sastvd/scripts/dbize_absdf.py --dsname sard
 PYTHONPATH="." python -u sastvd/scripts/dbize_absdf.py --dsname devign
 
 PYTHONPATH="." python -u sastvd/scripts/dbize_absdf.py
+
+PYTHONPATH="." python -u sastvd/scripts/dbize_absdf.py --dsname bigvul
+PYTHONPATH="." python -u sastvd/scripts/dbize_absdf.py --dsname ffmpeg_qemu
+PYTHONPATH="." python -u sastvd/scripts/dbize_absdf.py --dsname reposvul

@@ -385,7 +385,7 @@ def bigvul(cache=True, sample=False):
             df = df.sample(n=384, random_state=42)
             df.to_csv(svd.external_dir() / "MSR_data_cleaned_SAMPLE.csv", index=False)
     df = df.rename(columns={"Unnamed: 0": "id"})
-    df["dataset"] = "bigvul"
+    df["dataset"] = "bigvul_old"
 
     # Remove comments
     df["func_before"] = svd.dfmp(df, remove_comments, "func_before", cs=500)
@@ -518,7 +518,7 @@ def check_validity(_id, dsname, assert_no_exception=True, assert_line_number=Fal
     return True
 
 
-def itempath(_id, dsname="bigvul"):
+def itempath(_id, dsname="bigvul_old"):
     """Get itempath path from item id. TODO: somehow give itempath of before and after."""
     return svd.processed_dir() / f"{dsname}/before/{_id}.c"
 
@@ -612,21 +612,21 @@ def bigvul_filter(
         sample=sample,
         sample_mode=sample_mode,
         seed=seed,
-        dsname="bigvul",
+        dsname="bigvul_old",
     )
 
 
 def get_splits_map(dsname):
     logger.debug("loading fixed splits")
-    with open(svd.external_dir() / "feature_list.json", "r") as rfi:
-        feature_list = json.load(rfi)
-    if dsname == "bigvul" or "mutated" in dsname:
+    # with open(svd.external_dir() / "feature_list.json", "r") as rfi:
+    #     feature_list = json.load(rfi)
+    if dsname == "bigvul_old" or "mutated" in dsname:
         splits = get_linevul_splits()
     if dsname == "devign":
         splits = get_codexglue_splits()
     if dsname == "sard":
         splits = get_sard_splits()
-    if dsname in feature_list["VF"] + feature_list["GSF"]:
+    if dsname in ["bigvul", "ffmpeg_qemu", "reposvul"]:
         splits =  get_feat_splits(dsname)
     logger.debug("splits value counts:\n%s", splits.value_counts())
     return splits.to_dict()
@@ -711,11 +711,11 @@ def ds_partition(
         splits_map = get_splits_map(dsname)
         df["label"] = df.id.map(splits_map)
     elif split == "linevul":
-        assert dsname == "bigvul", dsname
+        assert dsname == "bigvul_old", dsname
         splits_map = get_linevul_splits_map()
         df["label"] = df.id.map(splits_map)
     else:
-        assert dsname == "bigvul", dsname
+        assert dsname == "bigvul_old", dsname
         splits_map = get_named_splits_map(split)
         df["label"] = df.id.map(splits_map)
     logger.debug("dataset value counts\n%s\ndatasethead\n%s", df.value_counts("label"), df.groupby("label").head(5))
@@ -727,7 +727,7 @@ def ds_partition(
     return df
 
 def bigvul_partition(df, partition, split="fixed", seed=0,):
-    return ds_partition(df, partition, "bigvul", split, seed)
+    return ds_partition(df, partition, "bigvul_old", split, seed)
 
 def test_random():
     df = bigvul()
@@ -791,7 +791,7 @@ def parse_limits(feat):
         limit_all = 1000
     return limit_subkeys, limit_all
 
-def abs_dataflow(feat, dsname="bigvul", sample=False, split="fixed", seed=0):
+def abs_dataflow(feat, dsname="bigvul_old", sample=False, split="fixed", seed=0):
     """Load abstract dataflow information"""
 
     limit_subkeys, limit_all = parse_limits(feat)
@@ -807,8 +807,6 @@ def abs_dataflow(feat, dsname="bigvul", sample=False, split="fixed", seed=0):
         sample_mode=sample,
         seed=seed,
     )
-    with open(svd.external_dir() / "feature_list.json", "r") as rfi:
-        feature_list = json.load(rfi)
     if dsname in feature_list["VF"] + feature_list["GSF"]:
         fraction_to_remove = 0.2
         num_rows_to_remove = int(len(df) * fraction_to_remove)
