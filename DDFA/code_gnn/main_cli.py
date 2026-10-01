@@ -16,7 +16,7 @@ import warnings
 import torch as th
 import nni
 from pytorch_lightning.callbacks import ModelCheckpoint
-from pytorch_lightning.utilities.cli import SaveConfigCallback
+from pytorch_lightning.cli import SaveConfigCallback
 from silence_tensorflow import silence_tensorflow
 silence_tensorflow()
 import os

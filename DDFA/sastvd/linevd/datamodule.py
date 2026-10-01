@@ -3,7 +3,6 @@ from sastvd.linevd.dataset import BigVulDatasetLineVD
 
 from torch.utils.data import Subset
 import pytorch_lightning as pl
-from pytorch_lightning.utilities.cli import DATAMODULE_REGISTRY
 from dgl.dataloading import GraphDataLoader
 from torchsampler import ImbalancedDatasetSampler
 
@@ -13,7 +12,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-@DATAMODULE_REGISTRY
 class BigVulDatasetLineVDDataModule(pl.LightningDataModule):
     """Pytorch Lightning Datamodule for Bigvul."""
 
