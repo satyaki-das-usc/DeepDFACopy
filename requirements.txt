@@ -15,3 +15,5 @@ scipy
 fastparquet
 scikit-learn
 pytorch-lightning
+deepspeed
+nni
