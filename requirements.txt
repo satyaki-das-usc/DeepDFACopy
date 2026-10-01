@@ -17,3 +17,6 @@ scikit-learn
 pytorch-lightning
 deepspeed
 nni
+torchsampler
+silence-tensorflow
+tensorflow
