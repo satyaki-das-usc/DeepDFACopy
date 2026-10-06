@@ -119,6 +119,13 @@ def main():
     # Checkpoints may contain pickled configuration; load only trusted files.
     checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
     hparams = dict(checkpoint["hyper_parameters"])
+    # Lightning CLI may omit input_dim because it is linked from the data module.
+    if hparams.get("input_dim") is None:
+        embedding_key = (
+            "all_embeddings.api.weight" if hparams.get("concat_all_absdf", False)
+            else "embedding.weight"
+        )
+        hparams["input_dim"] = checkpoint["state_dict"][embedding_key].shape[0]
     data = dict(checkpoint.get("datamodule_hyper_parameters", {}))
     dsname = args.dsname or data.get("dsname")
     if not dsname:
