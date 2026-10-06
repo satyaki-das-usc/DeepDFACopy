@@ -30,3 +30,11 @@ PYTHONPATH="." python code_gnn/main_cli.py test --config configs/config_node_set
 mv pred_mapping.csv $OUTPUT_DIR/node_set_pred_mapping.csv
 PYTHONPATH="." python code_gnn/main_cli.py test --config configs/config_edge_set.yaml --config configs/config_ggnn.yaml --ckpt_path sard.ckpt
 mv pred_mapping.csv $OUTPUT_DIR/edge_set_pred_mapping.csv
+
+
+PYTHONPATH="." python code_gnn/main_cli.py test --config configs/config_sard.yaml --config configs/config_ggnn.yaml --ckpt_path sard.ckpt
+mv pred_mapping.csv $OUTPUT_DIR/sard_pred_mapping.csv
+PYTHONPATH="." python code_gnn/main_cli.py test --config configs/config_sard.yaml --config configs/config_ggnn.yaml --ckpt_path sard.ckpt
+mv pred_mapping.csv $OUTPUT_DIR/sard_pred_mapping.csv
+PYTHONPATH="." python code_gnn/main_cli.py test --config configs/config_sard.yaml --config configs/config_ggnn.yaml --ckpt_path sard.ckpt
+mv pred_mapping.csv $OUTPUT_DIR/sard_pred_mapping.csv

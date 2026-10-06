@@ -11,6 +11,7 @@ PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --dsname buff_
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --dsname sensi_read --workers 8 --no-cache --stage 1
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --dsname sensi_write --workers 8 --no-cache --stage 1
 
+PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py --dsname bigvul --workers 8 --no-cache --stage 1
 
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py  --dsname incorr_calc_buff_size --workers 8 --cache --stage 2
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py  --dsname buff_access_src_size --workers 8 --cache --stage 2
@@ -22,3 +23,5 @@ PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py  --dsname buff
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py  --dsname buff_underread --workers 8 --cache --stage 2
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py  --dsname sensi_read --workers 8 --cache --stage 2
 PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py  --dsname sensi_write --workers 8 --cache --stage 2
+
+PYTHONPATH="." python -u sastvd/scripts/abstract_dataflow_full.py  --dsname bigvul --workers 8 --cache --stage 2

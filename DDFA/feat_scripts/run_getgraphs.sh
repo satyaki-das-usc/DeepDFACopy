@@ -10,3 +10,7 @@ PYTHONPATH="." python -u sastvd/scripts/getgraphs.py buff_underwrite --sess
 PYTHONPATH="." python -u sastvd/scripts/getgraphs.py buff_underread --sess
 PYTHONPATH="." python -u sastvd/scripts/getgraphs.py sensi_read --sess
 PYTHONPATH="." python -u sastvd/scripts/getgraphs.py sensi_write --sess
+
+
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py bigvul --sess --workers 32
+PYTHONPATH="." python -u sastvd/scripts/getgraphs.py ffmpeg_qemu --sess --workers 32

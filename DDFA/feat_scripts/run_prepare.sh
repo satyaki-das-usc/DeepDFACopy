@@ -10,3 +10,6 @@ PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset buff_underwrite --g
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset buff_underread --global_workers 12
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset sensi_read --global_workers 12
 PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset sensi_write --global_workers 12
+
+
+PYTHONPATH="." python -u sastvd/scripts/prepare.py --dataset bigvul --global_workers 32
