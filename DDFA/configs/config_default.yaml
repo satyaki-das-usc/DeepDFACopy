@@ -28,6 +28,15 @@ trainer:
         save_top_k: 1
     # - class_path: pytorch_lightning.callbacks.RichProgressBar
     - class_path: pytorch_lightning.callbacks.ModelSummary
+    - class_path: pytorch_lightning.callbacks.ModelCheckpoint
+      init_args:
+        dirpath: checkpoints/ffmpeg_qemu_seed1
+        filename: best-val-f1
+        monitor: val_F1Score
+        mode: max
+        save_top_k: 1
+        save_last: false
+        auto_insert_metric_name: false
   enable_progress_bar: true
   overfit_batches: 0.0
   check_val_every_n_epoch: 1
